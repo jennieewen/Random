@@ -1,0 +1,48 @@
+def substringFinder(string1, string2):
+    answer = ""
+    anslist=[]
+    if len(string1) < len(string2):
+        string1, string2 = string2, string1
+    len1, len2 = len(string1), len(string2)
+
+    for i in range(len1):
+        match = ""
+        for j in range(len2):
+            if (i + j < len1 and string1[i + j] == string2[j]):
+                match += string2[j]
+            else:
+                answer = match
+                if answer != '' and (len(answer) == 3 or len(answer) == 4):
+                    anslist.append(answer)
+                match = ""
+
+        if match != '' and len(match)== 4 :
+            anslist.append(match)
+    return anslist
+
+
+string_a = ''
+string_b = ''
+with open('dna.txt', 'r') as f:
+    content = f.readlines()
+    j = 1
+    for i in range(1, len(content)//2+1):
+        string_a = content[j].strip()
+        string_b = content[j+1].strip()
+
+        common_substrings = substringFinder(string_a, string_b)
+        length = len(common_substrings)
+        if length == 0:
+            print("Pair " + str(i) + ": ", "No Common Sequence Found")
+
+        elif length == 1:
+            print("Pair " + str(i) + ": ", common_substrings[0])
+        else:
+            print("Pair " + str(i) + ": ", common_substrings[0])
+
+            for k in range(length-1):
+                print("        ", common_substrings[k+1])
+
+        j += 2
+
+
