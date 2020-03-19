@@ -1,0 +1,33 @@
+import re
+import itertools
+
+def is_valid(isbn):
+    if isbn[-1] != "X" and isbn[-1] != "x":
+        return False
+    else:
+        isbn = isbn[:-1]
+    s1 = []
+    s2 = []
+    s = isbn.replace("-", "")
+    l = [int(i) for i in s]
+    l.append(10)
+    s1 = list(itertools.accumulate(l))
+    s2 = list(itertools.accumulate(s1))
+    if s2[-1] % 11 != 0:
+        return False
+    return True
+
+valid_dict = {}
+invalid_dict = {}
+myfile = open('isbnOut.txt', 'w')
+with open('isbn.txt', 'r') as f:
+    content = f.readlines()
+    for i in content:
+        st = i.strip()
+        if is_valid(st)== True:
+            new_st = st + "   " + "valid" + "\n"
+            print(new_st)
+        else:
+            new_st = st + "   " + "invalid" + "\n"
+        myfile.write(new_st)
+myfile.close()
